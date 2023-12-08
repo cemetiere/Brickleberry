@@ -29,10 +29,10 @@ DROP TABLE IF EXISTS InventarizationResult;
 CREATE TABLE InventarizationResult
 (
     id           SERIAL PRIMARY KEY,
-    change       INTEGER     NOT NULL,
-    animal_type  VARCHAR(30) NOT NULL,
-    FOREIGN KEY (animal_type) REFERENCES Animal_type (type_name),
-    territory_id INTEGER     NOT NULL,
+    change       INTEGER NOT NULL,
+    animal_type  INTEGER NOT NULL,
+    FOREIGN KEY (animal_type) REFERENCES Animal_type (id),
+    territory_id INTEGER NOT NULL,
     FOREIGN KEY (territory_id) REFERENCES Territory (id)
 );
 
