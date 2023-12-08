@@ -29,7 +29,7 @@ INSERT INTO Warehouse(territory_id, name, responsible_person) VALUES
     (1, 'Склад 1', 4),
     (2, 'Склад 2', 3),
     (3, 'Склад 3', 5);
-INSERT INTO Resourсe(name, count, warehouse_id) VALUES
+INSERT INTO Resource(name, count, warehouse_id) VALUES
     ('Сено', 10, 1),
     ('Сено', 20, 2),
     ('Сено', 30, 3),
