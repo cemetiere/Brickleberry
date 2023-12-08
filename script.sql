@@ -10,7 +10,7 @@ INSERT INTO Person(name, surname, lastname, date_of_birth) VALUES
     ("Василий", "Дуськин", "Кириллович", "03-09-2000");
 INSERT INTO Role(role_name) VALUES
     ("Управляющий"), ("Инспектор"), ("Научный отдел"), ("Хозотдел");
-INSERT INTO Person_role(person-id, role-id) VALUES
+INSERT INTO Person_role(person_id, role_id) VALUES
     (1, 1),(2, 1),(3, 2),(4, 2),(5, 2),(6, 3),(7, 4),(8,2),(9,2);
 INSERT INTO Brigade(name, inspectors_count) VALUES
     ("Домбыта", 3),
