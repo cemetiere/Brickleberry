@@ -116,7 +116,7 @@ CREATE TABLE Territory_brigade
     FOREIGN KEY (territory_id) REFERENCES Territory (id),
     brigade_id   INTEGER,
     FOREIGN KEY (brigade_id) REFERENCES Brigade (id)
-);
+); 
 
 CREATE OR REPLACE FUNCTION check_animal_count()
     RETURNS TRIGGER AS
