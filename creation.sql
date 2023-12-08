@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS Territory_coordinates;
 CREATE TABLE Territory_coordinates
 (
     id       SERIAL PRIMARY KEY,
@@ -7,7 +6,6 @@ CREATE TABLE Territory_coordinates
     diagonal INTEGER NOT NULL
 );
 
-DROP TABLE IF EXISTS Territory;
 CREATE TABLE Territory
 (
     id          SERIAL PRIMARY KEY,
@@ -17,7 +15,6 @@ CREATE TABLE Territory
     FOREIGN KEY (Coordinates) REFERENCES Territory_coordinates (id)
 );
 
-DROP TABLE IF EXISTS Animal_type;
 CREATE TABLE Animal_type
 (
     id         SERIAL PRIMARY KEY,
@@ -25,7 +22,6 @@ CREATE TABLE Animal_type
     endangered BOOLEAN
 );
 
-DROP TABLE IF EXISTS InventarizationResult;
 CREATE TABLE InventarizationResult
 (
     id           SERIAL PRIMARY KEY,
@@ -36,7 +32,6 @@ CREATE TABLE InventarizationResult
     FOREIGN KEY (territory_id) REFERENCES Territory (id)
 );
 
-DROP TABLE IF EXISTS Animal_type_territory;
 CREATE TABLE Animal_type_territory
 (
     id             SERIAL PRIMARY KEY,
@@ -47,7 +42,6 @@ CREATE TABLE Animal_type_territory
     FOREIGN KEY (territory_id) REFERENCES Territory (id)
 );
 
-DROP TABLE IF EXISTS Person;
 CREATE TABLE Person
 (
     id            SERIAL PRIMARY KEY,
@@ -57,7 +51,6 @@ CREATE TABLE Person
     date_of_birth TIMESTAMP
 );
 
-DROP TABLE IF EXISTS Report;
 CREATE TABLE Report
 (
     id            SERIAL PRIMARY KEY,
@@ -69,7 +62,6 @@ CREATE TABLE Report
     FOREIGN KEY (inv_result_id) REFERENCES InventarizationResult (id)
 );
 
-DROP TABLE IF EXISTS Warehouse;
 CREATE TABLE Warehouse
 (
     id                 SERIAL PRIMARY KEY,
@@ -80,7 +72,6 @@ CREATE TABLE Warehouse
     FOREIGN KEY (territory_id) REFERENCES Territory (id)
 );
 
-DROP TABLE IF EXISTS Resource;
 CREATE TABLE Resource
 (
     id           SERIAL PRIMARY KEY,
@@ -90,14 +81,12 @@ CREATE TABLE Resource
     FOREIGN KEY (warehouse_id) REFERENCES Warehouse (id)
 );
 
-DROP TABLE IF EXISTS Role;
 CREATE TABLE Role
 (
     id        SERIAL PRIMARY KEY,
     role_name VARCHAR(20) NOT NULL
 );
 
-DROP TABLE IF EXISTS Person_role;
 CREATE TABLE Person_role
 (
     person_id INTEGER,
@@ -106,7 +95,6 @@ CREATE TABLE Person_role
     FOREIGN KEY (role_id) REFERENCES Role (id)
 );
 
-DROP TABLE IF EXISTS Brigade;
 CREATE TABLE Brigade
 (
     id               SERIAL PRIMARY KEY,
@@ -114,7 +102,6 @@ CREATE TABLE Brigade
     name             VARCHAR(20)
 );
 
-DROP TABLE IF EXISTS Inspectors;
 CREATE TABLE Inspectors
 (
     person_id  INTEGER,
@@ -123,7 +110,6 @@ CREATE TABLE Inspectors
     FOREIGN KEY (brigade_id) REFERENCES Brigade (id)
 );
 
-DROP TABLE IF EXISTS Territory_brigade;
 CREATE TABLE Territory_brigade
 (
     territory_id INTEGER,
