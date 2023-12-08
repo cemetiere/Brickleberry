@@ -117,3 +117,22 @@ CREATE TABLE Territory_brigade
     brigade_id   INTEGER,
     FOREIGN KEY (brigade_id) REFERENCES Brigade (id)
 );
+
+CREATE OR REPLACE FUNCTION check_animal_count()
+    RETURNS TRIGGER AS
+$$
+BEGIN
+    IF (EXISTS (SELECT animal_count
+                FROM Animal_type_territory
+                WHERE (Animal_type_territory.animal_count + new.change < 0))) THEN
+        RAISE EXCEPTION 'Animal_count must be not negative';
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER positive_animal_count_after_inventarization
+    AFTER INSERT OR UPDATE
+    ON InventarizationResult
+    FOR EACH ROW
+EXECUTE PROCEDURE check_animal_count();
