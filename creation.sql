@@ -10,8 +10,8 @@ CREATE TABLE Territory
 (
     id          SERIAL PRIMARY KEY,
     name        VARCHAR(64),
-    square      REAL    NOT NULL,
-    coordinates INTEGER NOT NULL,
+    square      REAL           NOT NULL,
+    coordinates INTEGER UNIQUE NOT NULL,
     FOREIGN KEY (Coordinates) REFERENCES Territory_coordinates (id)
 );
 

@@ -1,0 +1,4 @@
+\i drop.sql
+\i creation.sql
+\i triggers.sql
+\i insertTest.sql
