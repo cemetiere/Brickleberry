@@ -4,7 +4,8 @@ $$
 BEGIN
     IF (EXISTS (SELECT animal_count
                 FROM Animal_type_territory
-                WHERE (Animal_type_territory.animal_count + new.change < 0))) THEN
+                WHERE (Animal_type_territory.animal_count + new.change < 0 and
+                       Animal_type_territory.animal_type_id = new.animal_type))) THEN
         RAISE EXCEPTION 'Animal_count must be not negative';
     END IF;
     RETURN NULL;

@@ -55,10 +55,10 @@ CREATE TABLE Report
 (
     id            SERIAL PRIMARY KEY,
     description   VARCHAR(1000),
-    date          TIMESTAMP NOT NULL,
-    person_id     INTEGER   NOT NULL,
+    date          TIMESTAMP,
+    person_id     INTEGER NOT NULL,
     FOREIGN KEY (person_id) REFERENCES Person (id),
-    inv_result_id INTEGER   NOT NULL,
+    inv_result_id INTEGER NOT NULL,
     FOREIGN KEY (inv_result_id) REFERENCES InventarizationResult (id)
 );
 
@@ -116,4 +116,58 @@ CREATE TABLE Territory_brigade
     FOREIGN KEY (territory_id) REFERENCES Territory (id),
     brigade_id   INTEGER,
     FOREIGN KEY (brigade_id) REFERENCES Brigade (id)
-); 
+);
+
+CREATE OR REPLACE FUNCTION inventarization(expected_count INTEGER, change INTEGER, type integer, ter_id integer,
+                                           creator_id INTEGER) RETURNS VOID AS
+$$
+DECLARE
+    inv_id INTEGER;
+BEGIN
+    IF (NOT (EXISTS (SELECT * FROM Resource WHERE (name = 'rfid' and count > expected_count)))) THEN
+        RAISE EXCEPTION 'Недостаточно меток';
+    end if;
+
+
+    INSERT INTO InventarizationResult (change, animal_type, territory_id) VALUES (change, type, ter_id);
+    inv_id := LASTVAl();
+    UPDATE Animal_type_territory
+    SET animal_count = (select animal_count
+                        from Animal_type_territory
+                        WHERE (animal_type_id = type and territory_id = ter_id)) + change
+    WHERE (animal_type_id = type and territory_id = ter_id);
+
+    INSERT INTO Report (description, date, person_id, inv_result_id) VALUES ('ZXC', NULL, creator_id, inv_id);
+END ;
+$$ language plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION regulation(responsible_person INTEGER) RETURNS VOID AS
+$$
+DECLARE
+    type_id INTEGER;
+    ter_id  INTEGER;
+    count   INTEGER;
+    brig_id INTEGER;
+BEGIN
+    LOOP
+        SELECT animal_type_id, territory_id, animal_count
+        into type_id, ter_id, count
+        from Animal_type_territory
+        WHERE animal_count < 10
+        LIMIT 1;
+        INSERT INTO Brigade (inspectors_count, name) VALUES (0, 'regulation brigade');
+        brig_id := LASTVAl();
+        INSERT INTO Inspectors(person_id, brigade_id) VALUES (responsible_person, brig_id);
+        UPDATE Animal_type_territory
+        SET animal_count = 10
+        WHERE (animal_type_id = type_id and territory_id = ter_id);
+        DELETE FROM Inspectors WHERE (person_id = responsible_person and brigade_id = brig_id);
+        DELETE FROM Brigade WHERE id = brig_id;
+        EXIT WHEN (NOT (EXISTS (SELECT * FROM Animal_type_territory WHERE animal_count < 10)));
+    END LOOP;
+END ;
+$$ language plpgsql;
+
+
